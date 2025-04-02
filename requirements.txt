@@ -3,3 +3,6 @@ uvicorn
 torch
 transformers
 numpy
+sentencepiece
+protobuf
+scikit-learn
