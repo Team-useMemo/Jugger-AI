@@ -2,7 +2,7 @@ name: Deploy AI Server (FastAPI)
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "dev" ,"feat/#1-prototype"]
 
 jobs:
   deploy-ai-server:
