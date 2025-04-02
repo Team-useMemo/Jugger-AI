@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List
-from services.text_processing import classify_or_create_category, category_embeddings
+from app.services.text_processing import classify_or_create_category, category_embeddings
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from services.skt_text_processing import classify_paragraph
+from app.services.skt_text_processing import classify_paragraph
 
 router = APIRouter()
 

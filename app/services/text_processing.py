@@ -1,7 +1,7 @@
 from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict
 import numpy as np
-from models.kobert_classifier import get_sentence_embedding
+from app.models.kobert_classifier import get_sentence_embedding
 
 # 기존 카테고리 저장소 (초기 없음)
 category_embeddings: Dict[str, List[np.ndarray]] = {}

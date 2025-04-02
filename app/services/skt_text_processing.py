@@ -2,7 +2,7 @@ import re
 from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict
 import numpy as np
-from models.skt_kobert import get_sentence_embedding
+from app.models.skt_kobert import get_sentence_embedding
 
 # ✅ 기존 카테고리 리스트
 CATEGORY_LABELS = {
