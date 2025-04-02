@@ -28,5 +28,5 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ~/my-app
-            docker-compose pull ai-server
-            docker-compose up -d ai-server
+            docker compose pull ai-server
+            docker compose up -d ai-server
