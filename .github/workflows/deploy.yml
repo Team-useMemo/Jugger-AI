@@ -1,12 +1,14 @@
 name: Deploy AI Server (FastAPI)
 
 on:
-  push:
-    branches: [ "dev" ,"feat/#1-prototype"]
+  pull_request:
+    types: [ closed ]
+    branches: [ main ]
 
 jobs:
   deploy-ai-server:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: ✅ Checkout FastAPI 코드
