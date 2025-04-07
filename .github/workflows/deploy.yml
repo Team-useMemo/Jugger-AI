@@ -1,12 +1,14 @@
 name: Deploy AI Server (FastAPI)
 
 on:
-  push:
-    branches: [ "dev" ]
+  pull_request:
+    types: [ closed ]
+    branches: [ main ]
 
 jobs:
   deploy-ai-server:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: ✅ Checkout FastAPI 코드
@@ -28,5 +30,5 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd ~/my-app
-            docker-compose pull ai-server
-            docker-compose up -d ai-server
+            docker compose pull ai-server
+            docker compose up -d ai-server
