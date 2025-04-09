@@ -1,13 +1,14 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.services.skt_text_processing import classify_paragraph
+from app.services.skt_text_processing import classify_paragraph_with_user
 
 router = APIRouter()
 
 class ParagraphRequest(BaseModel):
-    paragraph: str  # 단일 문단 받기
+    user_uuid: str
+    paragraph: str
 
-@router.post("/classify_paragraph")
+@router.post("/ai/classify")
 async def classify_paragraph_api(request: ParagraphRequest):
-    result = classify_paragraph(request.paragraph)
+    result = await classify_paragraph_with_user(request.user_uuid, request.paragraph)
     return result
