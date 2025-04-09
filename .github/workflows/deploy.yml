@@ -2,25 +2,42 @@ name: Deploy AI Server (FastAPI)
 
 on:
   pull_request:
-    types: [ closed ]
-    branches: [ main ]
+    types: [closed]
+    branches: [main]
 
 jobs:
   deploy-ai-server:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true
+    timeout-minutes: 30
 
     steps:
       - name: ✅ Checkout FastAPI 코드
         uses: actions/checkout@v3
 
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: 💾 Docker 캐시 설정
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
       - name: 🐳 Docker Hub 로그인
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: ⚙️ FastAPI 이미지 빌드 & 푸시
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ai-server:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/ai-server:latest
+      - name: ⚙️ FastAPI 이미지 빌드 & 푸시 (Buildx + 캐시 적용)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/ai-server:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: 🚀 EC2에 접속해서 ai-server 재시작
         uses: appleboy/ssh-action@v0.1.6
