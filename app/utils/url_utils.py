@@ -1,27 +1,46 @@
-import validators
-import httpx
+import asyncio
 from typing import List, Tuple
 
-async def validate_urls(urls: List[str], timeout: float = 5.0) -> Tuple[List[str], List[str]]:
-    """
-    주어진 URL 리스트를 형식(정규식) + 실제 응답 두 단계로 검증.
-    반환: (valid_urls, invalid_urls)
-    """
+import httpx
+import validators
+
+
+async def validate_urls(
+    urls: List[str],
+    timeout: float = 5.0,
+    max_concurrency: int = 20,
+    ok_status: range = range(200, 400),
+) -> Tuple[List[str], List[str]]:
+
     syntactically_valid = [u for u in urls if validators.url(u)]
+    syntactically_invalid = [u for u in urls if u not in syntactically_valid]
 
     if not syntactically_valid:
-        return [], urls  # 전부 형식 오류
+        return [], syntactically_invalid
 
-    valid, invalid = [], []
-    async with httpx.AsyncClient(timeout=timeout, follow_redirects=True) as client:
-        tasks = [client.head(u) for u in syntactically_valid]  # HEAD 요청으로 가볍게
-        responses = await httpx.AsyncClient.gather(*tasks, return_exceptions=True)
+    valid, invalid = [], syntactically_invalid
 
-        for u, resp in zip(syntactically_valid, responses):
-            if isinstance(resp, Exception):
-                invalid.append(u)
-            elif 200 <= resp.status_code < 400:
-                valid.append(u)
-            else:
-                invalid.append(u)
+    async with httpx.AsyncClient(
+        timeout=timeout,
+        follow_redirects=True,
+        headers={"User-Agent": "url-validator/1.0"},
+    ) as client:
+
+        sem = asyncio.Semaphore(max_concurrency)
+
+        async def check(u: str):
+            async with sem:
+                try:
+                    r = await client.head(u)
+                    if r.status_code == 405:
+                        r = await client.get(u, headers={"Range": "bytes=0-0"})
+                    if r.status_code in ok_status:
+                        valid.append(u)
+                    else:
+                        invalid.append(u)
+                except Exception:
+                    invalid.append(u)
+
+        await asyncio.gather(*(check(u) for u in syntactically_valid))
+
     return valid, invalid
