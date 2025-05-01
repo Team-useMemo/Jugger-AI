@@ -8,6 +8,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 model = AutoModel.from_pretrained(model_name)
 
 # 문장 임베딩 생성 함수
+#테스트용 문장
+
 def get_sentence_embedding(text: str):
     inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
     with torch.no_grad():
