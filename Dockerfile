@@ -13,6 +13,8 @@ WORKDIR /app
 
 COPY --from=builder /install/packages /usr/local/
 
-COPY . .
+# 소스 전체 복사 (Dockerfile과 app 디렉토리가 같은 위치일 때)
+COPY ./app /app
 
+# FastAPI 인스턴스가 app.main 모듈 안에 있을 경우
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
