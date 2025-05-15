@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes import skt_classify
+from routes import skt_classify
 
 app = FastAPI(title="SKT KoBERT Text Classification API with URL Extraction")
 
