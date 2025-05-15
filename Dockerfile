@@ -11,6 +11,8 @@ WORKDIR /app
 ENV PYTHONPATH=/app
 
 COPY --from=builder /install/packages /usr/local/
+
 COPY ./app /app
 
 CMD ["python", "server.py"]
+
