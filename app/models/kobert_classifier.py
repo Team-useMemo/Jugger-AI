@@ -9,7 +9,7 @@ model = AutoModel.from_pretrained(model_name)
 
 # 문장 임베딩 생성 함수
 #테스트용 문장
-
+#ㄱㄱ
 def get_sentence_embedding(text: str):
     inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True)
     with torch.no_grad():
