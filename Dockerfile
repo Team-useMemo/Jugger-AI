@@ -20,3 +20,4 @@ COPY ./app /app
 
 # server.py를 실행 (여기서 uvicorn.run이 직접 호출됨)
 CMD ["python", "server.py"]
+
