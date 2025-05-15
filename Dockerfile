@@ -17,4 +17,5 @@ COPY --from=builder /install/packages /usr/local/
 COPY ./app /app
 
 # FastAPI 인스턴스가 app.main 모듈 안에 있을 경우
+
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
