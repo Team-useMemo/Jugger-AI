@@ -10,7 +10,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 4. 실제 코드 복사 (변경 가능성이 높기 때문에 나중에 복사해야 pip 캐시 유지됨)
-COPY ./app ./app
+COPY app ./app
 
 # 5. PYTHONPATH 환경변수 설정 (모듈 import를 위해)
 ENV PYTHONPATH=/app
