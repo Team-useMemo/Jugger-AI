@@ -1,14 +1,13 @@
 name: Deploy AI Server (FastAPI)
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  push:
+    branches:
+      - dev
 
 jobs:
   deploy-ai-server:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
     timeout-minutes: 30
 
     steps:
