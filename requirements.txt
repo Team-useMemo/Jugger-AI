@@ -6,3 +6,4 @@ numpy
 sentencepiece
 protobuf
 scikit-learn
+sentence-transformers
