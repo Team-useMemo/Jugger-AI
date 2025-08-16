@@ -4,7 +4,7 @@ from app.routes import skt_classify
 app = FastAPI(title="SKT KoBERT Text Classification API with URL Extraction")
 
 # API 라우터 등록
-app.include_router(skt_classify.router, prefix="/api", tags=["SKT KoBERT Classification"])
+app.include_router(skt_classify.router, prefix="/ai", tags=["SKT KoBERT Classification"])
 
 @app.get("/")
 def root():
