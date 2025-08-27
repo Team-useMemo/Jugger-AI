@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      - main
 
 jobs:
   deploy-ai-server:
@@ -38,14 +39,27 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-      - name: 🚀 EC2에 접속해서 ai-server 재시작
+      - name: 🚀 EC2에 접속해서 ai-server 재시작 (개발/운영 분기)
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_EC2_HOST || secrets.EC2_HOST }}
+          username: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_EC2_USER || secrets.EC2_USER }}
+          key: ${{ github.ref == 'refs/heads/dev' && secrets.DEV_EC2_KEY || secrets.EC2_KEY }}
           script: |
-            cd ~/my-app
-            echo "${{ secrets.ENV_FILE }}" > .env
+            echo "Branch: $GITHUB_REF_NAME"
+
+            if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+              DEPLOY_DIR=~/my-app
+            else
+              DEPLOY_DIR=~/app
+            fi
+
+            cd $DEPLOY_DIR
+
+            # 공통 ENV 파일 작성
+            cat > .env <<'EOF'
+            ${{ secrets.ENV_FILE }}
+            EOF
+
             docker compose pull ai-server
             docker compose up -d ai-server
