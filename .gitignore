@@ -1,0 +1,116 @@
+app/.env
+
+# --- allow GitHub Actions workflows ---
+!.github/
+!.github/workflows/
+!.github/workflows/*.yml
+!.github/workflows/*.yaml
+
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+*.manifest
+*.spec
+
+# ---- Virtual Environment ----
+app/.env
+.venv/
+venv/
+ENV/
+env/
+Pipfile.lock
+poetry.lock
+
+# ---- FastAPI / Uvicorn ----
+*.log
+*.db
+*.sqlite3
+server.log
+
+# ---- Config / Secrets ----
+*.ini
+*.toml
+.env.local
+.env.*.local
+.envrc
+/secrets/
+
+# ---- VSCode / PyCharm ----
+.vscode/
+.idea/
+*.iml
+
+# ---- OS Files ----
+.DS_Store
+Thumbs.db
+
+# ---- Tests / Coverage ----
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+pytest_cache/
+.pytest_cache/
+.pytest_results/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ---- Test Files (프로젝트 특정) ----
+test_*.py
+*_test.py
+
+# ---- Build / Dist ----
+build/
+dist/
+wheels/
+*.egg-info/
+*.egg
+.installed.cfg
+*.egg-info/
+
+# ---- Notebooks ----
+.ipynb_checkpoints
+*.ipynb
+
+# ---- Misc ----
+.mypy_cache/
+.pyre/
+.dmypy.json
+dmypy.json
+
+# Logs
+logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dev-debug.log
+
+# Dependency directories
+node_modules/
+
+# Environment variables
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS specific
+
+# Task files
+# tasks.json
+# tasks/
